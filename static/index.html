@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDH Regenerative Coffee Program — Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Highcharts core + Maps module (jsdelivr mirror — code.highcharts.com is blocked on some networks) -->
+  <script src="https://cdn.jsdelivr.net/npm/highcharts@11/highcharts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highcharts@11/modules/map.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highcharts@11/modules/sankey.js"></script>
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <nav class="sidebar">
+      <div class="sidebar-brand">
+        <img src="assets/idh-logo.png" alt="IDH — transforming markets" class="brand-logo" />
+        <small>Regenerative Coffee Program Dashboard</small>
+      </div>
+      <div id="sidebar-nav"></div>
+    </nav>
+
+    <div class="main-column">
+      <header class="topbar">
+        <h1 id="topbar-title">Overview</h1>
+        <button class="theme-toggle" id="theme-toggle-btn">🌙 Dark</button>
+      </header>
+
+      <div class="filter-bar" id="filter-bar"></div>
+
+      <div class="dashboard-content" id="dashboard-content">
+        <div class="banner">
+          Standalone preview build — mock data only, no backend/database connection.
+          See the <code>backend/</code> + <code>frontend/</code> folders for the full
+          production app (needs Node.js).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.generated.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,2291 @@
+{
+  "$schema": "IDH Regenerative Coffee Program Dashboard \u2014 canonical indicator registry. Generated from 'IDH Logic Sheet (1).xlsx' (sheet: Updated Design Sheet_v2, rows 2-70) cross-referenced with idh_prod_sync_driver (1).sql. This file is the single source of truth: backend routes, mock data, and docs/INDICATOR_MAPPING.md are all derived from it.",
+  "tables": {
+    "farmer_master_form": {
+      "form": "Farmer Master Form",
+      "dateColumn": "createdAt",
+      "hasGeo": true
+    },
+    "field_facilitator_registration": {
+      "form": "Field Facilitator Registration",
+      "dateColumn": "createdAt",
+      "hasGeo": true
+    },
+    "fig_registration": {
+      "form": "FIG Registration",
+      "dateColumn": "createdAt",
+      "hasGeo": true
+    },
+    "farmer_fig_enrollment": {
+      "form": "Farmer FIG Enrollment",
+      "dateColumn": "createdAt",
+      "hasGeo": true
+    },
+    "individual_farmer_visit": {
+      "form": "Individual Farmer Visit",
+      "dateColumn": "activity_date",
+      "hasGeo": true
+    },
+    "daily_activity_ffs": {
+      "form": "Daily Activity FFS",
+      "dateColumn": "activity_date",
+      "hasGeo": true
+    },
+    "demo_farm_activity": {
+      "form": "Demo Farm Activity",
+      "dateColumn": "order26",
+      "hasGeo": true
+    }
+  },
+  "dashboards": [
+    {
+      "id": "overview",
+      "label": "Overview"
+    },
+    {
+      "id": "farmer-mobilization",
+      "label": "Farmer Mobilization and Activity Demonstration"
+    },
+    {
+      "id": "regen-practices",
+      "label": "Regen Agricultural Practices"
+    },
+    {
+      "id": "soil-health",
+      "label": "Soil Health Management"
+    },
+    {
+      "id": "water-management",
+      "label": "Water Management"
+    },
+    {
+      "id": "biodiversity",
+      "label": "Biodiversity Improvement"
+    },
+    {
+      "id": "climate-ghg",
+      "label": "Climate Change / GHG Mitigation"
+    },
+    {
+      "id": "livelihood",
+      "label": "Livelihood Diversification"
+    },
+    {
+      "id": "others",
+      "label": "Others"
+    }
+  ],
+  "indicators": [
+    {
+      "id": "ovw-01",
+      "row": 2,
+      "dashboard": "overview",
+      "subDashboard": "Overview",
+      "indicator": "Farmers Enrolled",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "farmer_master_form"
+      ],
+      "aggregation": "count",
+      "logic": "Total response count in Farmer Master Form.",
+      "sql": "SELECT COUNT(*) AS value FROM farmer_master_form WHERE isActive = '1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 26162
+      }
+    },
+    {
+      "id": "ovw-02",
+      "row": 3,
+      "dashboard": "overview",
+      "subDashboard": "Overview",
+      "indicator": "Field Facilitators Registered",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "field_facilitator_registration"
+      ],
+      "aggregation": "count",
+      "logic": "Total response count in Field Facilitator Registration.",
+      "sql": "SELECT COUNT(*) AS value FROM field_facilitator_registration WHERE isActive = '1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 118
+      }
+    },
+    {
+      "id": "ovw-03",
+      "row": 4,
+      "dashboard": "overview",
+      "subDashboard": "Overview",
+      "indicator": "FIG Registered",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "fig_registration"
+      ],
+      "aggregation": "count",
+      "logic": "Total response count in FIG Registration.",
+      "sql": "SELECT COUNT(*) AS value FROM fig_registration WHERE isActive = '1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 462
+      }
+    },
+    {
+      "id": "ovw-04",
+      "row": 5,
+      "dashboard": "overview",
+      "subDashboard": "Overview",
+      "indicator": "Farmers Enrolled into FIG",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "farmer_fig_enrollment"
+      ],
+      "aggregation": "count",
+      "logic": "Total response count in Farmer FIG Enrollment.",
+      "sql": "SELECT COUNT(*) AS value FROM farmer_fig_enrollment WHERE isActive = '1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 18940
+      }
+    },
+    {
+      "id": "ovw-05",
+      "row": 6,
+      "dashboard": "overview",
+      "subDashboard": "Overview",
+      "indicator": "Farmer Engagement and Adoption",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "farmer_master_form",
+        "daily_activity_ffs",
+        "individual_farmer_visit"
+      ],
+      "aggregation": "mixed_per_category",
+      "categories": [
+        {
+          "label": "Enrolled",
+          "table": "farmer_master_form",
+          "column": null,
+          "op": "count"
+        },
+        {
+          "label": "Trained",
+          "table": "daily_activity_ffs",
+          "column": "nosfarmers",
+          "op": "sum"
+        },
+        {
+          "label": "Adopting 1+ Practice",
+          "table": "individual_farmer_visit",
+          "column": "demonstrated_practices",
+          "op": "count_not_null"
+        },
+        {
+          "label": "Access to Inputs",
+          "table": "individual_farmer_visit",
+          "column": "input_provided",
+          "op": "count_not_null"
+        },
+        {
+          "label": "Receiving CKT Messages",
+          "table": "individual_farmer_visit",
+          "column": "msg_from_ckt",
+          "op": "count_equals",
+          "value": "1"
+        },
+        {
+          "label": "Access to Financial Services",
+          "table": "individual_farmer_visit",
+          "column": "iccrl",
+          "op": "count_not_null"
+        },
+        {
+          "label": "Done Soil Testing",
+          "table": "individual_farmer_visit",
+          "column": "soil_test",
+          "op": "count_equals",
+          "value": "1"
+        }
+      ],
+      "logic": "Composite bar comparing 7 funnel categories, one query per bar against the form named for that category.",
+      "sql": "-- one SELECT per category, see categories[].op\nSELECT COUNT(*) FROM farmer_master_form WHERE isActive='1';\nSELECT SUM(nosfarmers) FROM daily_activity_ffs WHERE isActive='1';\nSELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND demonstrated_practices IS NOT NULL AND demonstrated_practices <> '';\nSELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND input_provided IS NOT NULL AND input_provided <> '';\nSELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('1', msg_from_ckt);\nSELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND iccrl IS NOT NULL AND iccrl <> '';\nSELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('1', soil_test);",
+      "notes": "AMBIGUITY IN SHEET: the Revised Logic column (I6) leaves the 'Adopting 1+ Practice' source question blank, and reassigns 'Access to Inputs' to the same column (demonstrated_practices) that the original spec (F6) used for 'Adopting 1+ Practice' \u2014 likely a copy/paste duplication in the sheet. Implemented here as: 'Adopting 1+ Practice' = demonstrated_practices answered (matches original F6 intent), 'Access to Inputs' = input_provided answered (matches original F6 intent). Flag for client confirmation before go-live.",
+      "mock": {
+        "series": [
+          26162,
+          15480,
+          11290,
+          9870,
+          8420,
+          4310,
+          3960
+        ]
+      }
+    },
+    {
+      "id": "ovw-06",
+      "row": 7,
+      "dashboard": "overview",
+      "subDashboard": "Overview",
+      "indicator": "Regenerative Practices Adoption Levels",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_by_selection_count",
+      "column": "demonstrated_practices",
+      "categories": [
+        {
+          "label": "1 Practice"
+        },
+        {
+          "label": "2 Practices"
+        },
+        {
+          "label": "3 Practices"
+        },
+        {
+          "label": "4 Practices"
+        },
+        {
+          "label": "5 Practices"
+        }
+      ],
+      "logic": "For each response, count how many options were selected in Observed Adoption of Demonstrated Practices, then bucket the response into the matching bar (1..5 practices).",
+      "sql": "SELECT (LENGTH(demonstrated_practices) - LENGTH(REPLACE(demonstrated_practices, ',', '')) + 1) AS n_practices, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND demonstrated_practices IS NOT NULL AND demonstrated_practices <> '' GROUP BY n_practices",
+      "notes": "Fixes bug: only 2 of 5 bars ('1 Practice' and '4+ Practices') were rendering; all 5 buckets must show.",
+      "mock": {
+        "series": [
+          4210,
+          3180,
+          2340,
+          1180,
+          620
+        ]
+      }
+    },
+    {
+      "id": "ovw-07",
+      "row": 8,
+      "dashboard": "overview",
+      "subDashboard": "Overview",
+      "indicator": "Practice-wise Adoption of Regenerative Practices",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "demonstrated_practices",
+      "categories": [
+        {
+          "label": "Soil Health",
+          "value": "1"
+        },
+        {
+          "label": "Water",
+          "value": "2"
+        },
+        {
+          "label": "Biodiversity",
+          "value": "3"
+        },
+        {
+          "label": "GHG Reduction",
+          "value": "4"
+        },
+        {
+          "label": "Livelihood",
+          "value": "5"
+        }
+      ],
+      "logic": "Multi-select field \u2014 one response selecting multiple practices counts individually toward each practice's bar.",
+      "sql": "SELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('1', demonstrated_practices); -- repeat per category value",
+      "notes": "Was showing 'No Data Available'.",
+      "mock": {
+        "series": [
+          7940,
+          5210,
+          4380,
+          3020,
+          2610
+        ]
+      }
+    },
+    {
+      "id": "fm-enr-01",
+      "row": 9,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Enrollment",
+      "indicator": "Farmer Enrollment",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "farmer_master_form"
+      ],
+      "aggregation": "count",
+      "logic": "Total count of farmers enrolled.",
+      "sql": "SELECT COUNT(*) AS value FROM farmer_master_form WHERE isActive = '1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 26162
+      }
+    },
+    {
+      "id": "fm-enr-02",
+      "row": 10,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Enrollment",
+      "indicator": "Age Group Distribution",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "farmer_master_form"
+      ],
+      "aggregation": "count_distribution",
+      "column": "age_of_farmer",
+      "categories": [
+        {
+          "label": "Below 25",
+          "min": null,
+          "max": 24
+        },
+        {
+          "label": "25\u201335",
+          "min": 25,
+          "max": 35
+        },
+        {
+          "label": "36\u201350",
+          "min": 36,
+          "max": 50
+        },
+        {
+          "label": "Above 50",
+          "min": 51,
+          "max": null
+        }
+      ],
+      "logic": "Bucket Age of Farmer into brackets; blank/null ages are dropped entirely (not counted in any bracket).",
+      "sql": "SELECT CASE WHEN age_of_farmer <= 24 THEN 'Below 25' WHEN age_of_farmer BETWEEN 25 AND 35 THEN '25\u201335' WHEN age_of_farmer BETWEEN 36 AND 50 THEN '36\u201350' ELSE 'Above 50' END AS bracket, COUNT(*) AS value FROM farmer_master_form WHERE isActive='1' AND age_of_farmer IS NOT NULL GROUP BY bracket",
+      "notes": "Fixes bug: '>50 yrs' bar showed 14702 vs a manually verified 14674 \u2014 root cause was blank ages leaking into a bracket; fix is to exclude NULL ages via the WHERE clause before bucketing. ASSUMPTION: exact bracket cut points (25/35/50) are not specified in the sheet beyond the '>50' reference \u2014 confirm with client before go-live.",
+      "mock": {
+        "series": [
+          1840,
+          4920,
+          4726,
+          14674
+        ]
+      }
+    },
+    {
+      "id": "fm-enr-03",
+      "row": 11,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Enrollment",
+      "indicator": "Gender Distribution",
+      "chartType": "donut",
+      "chartLib": "echarts",
+      "tables": [
+        "farmer_master_form"
+      ],
+      "aggregation": "count_distribution",
+      "column": "gender_farmer",
+      "categories": [
+        {
+          "label": "Male",
+          "value": "1"
+        },
+        {
+          "label": "Female",
+          "value": "2"
+        },
+        {
+          "label": "Other",
+          "value": "3"
+        }
+      ],
+      "logic": "Count Male / Female / Other; blanks ignored. Only one 'Other' category should exist.",
+      "sql": "SELECT gender_farmer, COUNT(*) AS value FROM farmer_master_form WHERE isActive='1' AND gender_farmer IN ('1','2','3') GROUP BY gender_farmer",
+      "notes": "Fixes bug: wrong totals + a duplicate 'Other' option displayed. Manually verified counts: Male 19327, Female 6834, Other 1.",
+      "mock": {
+        "series": [
+          19327,
+          6834,
+          1
+        ]
+      }
+    },
+    {
+      "id": "fm-enr-04",
+      "row": 12,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Enrollment",
+      "indicator": "Landholding Size Distribution",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "farmer_master_form"
+      ],
+      "aggregation": "count_distribution",
+      "column": "total_farm_area",
+      "categories": [
+        {
+          "label": "\u2264 2 ha",
+          "min": null,
+          "max": 2
+        },
+        {
+          "label": "2.1\u20135 ha",
+          "min": 2.1,
+          "max": 5
+        },
+        {
+          "label": "> 5 ha",
+          "min": 5.01,
+          "max": null
+        }
+      ],
+      "logic": "Bucket Total Farm Area into 3 brackets; blanks excluded entirely.",
+      "sql": "SELECT CASE WHEN total_farm_area <= 2 THEN '\u2264 2 ha' WHEN total_farm_area BETWEEN 2.1 AND 5 THEN '2.1\u20135 ha' ELSE '> 5 ha' END AS bracket, COUNT(*) AS value FROM farmer_master_form WHERE isActive='1' AND total_farm_area IS NOT NULL GROUP BY bracket",
+      "notes": "Fixes bug: major count variance vs manual QA; last bracket changed from '5.1\u201310 ha' to '> 5 ha' (open-ended). Manually verified: \u22642ha 13244, 2.1\u20135ha 9675, >5ha 3157. UNIT FLAG: schema comment on total_farm_area says 'in acres' but the sheet labels brackets 'ha' with the same numeric cutoffs (2 / 5) the client used for manual verification \u2014 implemented literally against the raw column with no unit conversion to match the verified counts; confirm the true unit with the client.",
+      "mock": {
+        "series": [
+          13244,
+          9675,
+          3157
+        ]
+      }
+    },
+    {
+      "id": "fm-enr-05",
+      "row": 13,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Enrollment",
+      "indicator": "Education Level Distribution",
+      "chartType": "donut",
+      "chartLib": "echarts",
+      "tables": [
+        "farmer_master_form"
+      ],
+      "aggregation": "count_distribution",
+      "column": "education_level_farmer",
+      "categories": [
+        {
+          "label": "No Formal Education"
+        },
+        {
+          "label": "Primary"
+        },
+        {
+          "label": "Secondary"
+        },
+        {
+          "label": "Higher Secondary"
+        },
+        {
+          "label": "Graduate & Post Graduate Above"
+        }
+      ],
+      "logic": "Count each of the 5 defined education categories; every response must map into one of them. Show count per slice, percentage (of total including blanks) on hover.",
+      "sql": "SELECT education_level_farmer, COUNT(*) AS value FROM farmer_master_form WHERE isActive='1' AND education_level_farmer IS NOT NULL AND education_level_farmer <> '' GROUP BY education_level_farmer",
+      "notes": "Fixes bug: an 'Unknown' bucket was absorbing responses that should map to the 5 defined categories; chart type changed pie \u2192 donut per spec, with hover showing % of total (incl. blanks).",
+      "mock": {
+        "series": [
+          3120,
+          8640,
+          7910,
+          4380,
+          2112
+        ]
+      }
+    },
+    {
+      "id": "fm-enr-06",
+      "row": 14,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Enrollment",
+      "indicator": "Area under Coffee Cultivation (Arabica / Robusta)",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "farmer_master_form"
+      ],
+      "aggregation": "sum_compare",
+      "categories": [
+        {
+          "label": "Arabica",
+          "column": "coffee_area_arabica"
+        },
+        {
+          "label": "Robusta",
+          "column": "coffee_area_robusta"
+        }
+      ],
+      "logic": "Sum Coffee Area for Arabica across all responses vs sum Coffee Area for Robusta across all responses.",
+      "sql": "SELECT SUM(coffee_area_arabica) AS arabica, SUM(coffee_area_robusta) AS robusta FROM farmer_master_form WHERE isActive='1'",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          41280,
+          33460
+        ]
+      }
+    },
+    {
+      "id": "fm-trn-01",
+      "row": 15,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Training",
+      "indicator": "Average Time Duration",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "daily_activity_ffs"
+      ],
+      "aggregation": "avg",
+      "column": "training_duration",
+      "logic": "Average of training session duration (minutes).",
+      "sql": "SELECT AVG(training_duration) AS value FROM daily_activity_ffs WHERE isActive='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 92
+      }
+    },
+    {
+      "id": "fm-trn-02",
+      "row": 16,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Training",
+      "indicator": "Number of Farmers Trained",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "daily_activity_ffs"
+      ],
+      "aggregation": "sum",
+      "column": "nosfarmers",
+      "logic": "Sum of 'Number of Farmers Attended training' across all training sessions.",
+      "sql": "SELECT SUM(nosfarmers) AS value FROM daily_activity_ffs WHERE isActive='1'",
+      "notes": "Fixes bug: was showing an incorrect total (465) \u2014 root cause was aggregating per-session count instead of summing attendance across sessions.",
+      "mock": {
+        "value": 15480
+      }
+    },
+    {
+      "id": "fm-trn-03",
+      "row": 17,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Training",
+      "indicator": "Topics Covered During Training Session",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "daily_activity_ffs"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "covered_topics",
+      "categories": [
+        {
+          "label": "Soil"
+        },
+        {
+          "label": "Water"
+        },
+        {
+          "label": "Biodiversity"
+        },
+        {
+          "label": "GHG"
+        },
+        {
+          "label": "Livelihoods"
+        }
+      ],
+      "logic": "Count how many training sessions covered each topic; a session covering multiple topics counts individually toward each.",
+      "sql": "SELECT COUNT(*) FROM daily_activity_ffs WHERE isActive='1' AND FIND_IN_SET('Soil', covered_topics); -- repeat per category",
+      "notes": "Fixes bug: 'No Data Available' + wrong categories displayed.",
+      "mock": {
+        "series": [
+          860,
+          640,
+          510,
+          430,
+          380
+        ]
+      }
+    },
+    {
+      "id": "fm-trn-04",
+      "row": 18,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "Farmer Training",
+      "indicator": "Mode of Training Session",
+      "chartType": "donut",
+      "chartLib": "echarts",
+      "tables": [
+        "daily_activity_ffs"
+      ],
+      "aggregation": "count_distribution",
+      "column": "training_type",
+      "categories": [
+        {
+          "label": "FFS"
+        },
+        {
+          "label": "Group Training"
+        },
+        {
+          "label": "Individual Visit"
+        }
+      ],
+      "logic": "Count each Type of Training Conducted.",
+      "sql": "SELECT training_type, COUNT(*) AS value FROM daily_activity_ffs WHERE isActive='1' GROUP BY training_type",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          620,
+          310,
+          180
+        ]
+      }
+    },
+    {
+      "id": "fm-demo-01",
+      "row": 19,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "RegenAg Activity Demonstration",
+      "indicator": "Number of Farmers Attended Demos",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum",
+      "column": "nos_farmers",
+      "logic": "Sum of Number of Farmers Observed/Participated.",
+      "sql": "SELECT SUM(nos_farmers) AS value FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 9870
+      }
+    },
+    {
+      "id": "fm-demo-02",
+      "row": 20,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "RegenAg Activity Demonstration",
+      "indicator": "Demo Participation Under Different Activities",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "demonstration_theme",
+      "logic": "Count of responses per Theme of Demonstration Conducted.",
+      "sql": "SELECT demonstration_theme, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND demonstration_theme IS NOT NULL GROUP BY demonstration_theme",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "categoriesRuntime": true,
+        "series": [
+          2140,
+          1820,
+          1590,
+          1310,
+          980
+        ]
+      }
+    },
+    {
+      "id": "fm-demo-03",
+      "row": 21,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "RegenAg Activity Demonstration",
+      "indicator": "Total Area Adopted (acres)",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum_scaled",
+      "columns": [
+        "soil_health_total_area",
+        "total_area_under_water_practices",
+        "total_biodiversity_area",
+        "total_climate_mitigation_area",
+        "total_livelihood_area"
+      ],
+      "scale": 0.4048375,
+      "scaleNote": "divide acre-sum by 2.471 to express in hectares",
+      "logic": "Sum acreage across all adopted-practice categories, divided by 2.471 (acres \u2192 hectares).",
+      "sql": "SELECT SUM(soil_health_total_area + total_area_under_water_practices + total_biodiversity_area + total_climate_mitigation_area + total_livelihood_area) / 2.471 AS value FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 18240
+      }
+    },
+    {
+      "id": "fm-demo-04",
+      "row": 22,
+      "dashboard": "farmer-mobilization",
+      "subDashboard": "RegenAg Activity Demonstration",
+      "indicator": "Area Adopted Under Different Practices",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum_compare",
+      "categories": [
+        {
+          "label": "Soil Health",
+          "column": "soil_health_total_area"
+        },
+        {
+          "label": "Water",
+          "column": "total_area_under_water_practices"
+        },
+        {
+          "label": "Biodiversity",
+          "column": "total_biodiversity_area"
+        },
+        {
+          "label": "Climate Mitigation",
+          "column": "total_climate_mitigation_area"
+        },
+        {
+          "label": "Livelihood",
+          "column": "total_livelihood_area"
+        }
+      ],
+      "logic": "Compare summed acreage across the 5 practice categories. Show absolute number always, percentage on hover.",
+      "sql": "SELECT SUM(soil_health_total_area) AS soil, SUM(total_area_under_water_practices) AS water, SUM(total_biodiversity_area) AS biodiversity, SUM(total_climate_mitigation_area) AS climate, SUM(total_livelihood_area) AS livelihood FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "SHEET CONFLICT: the Validations column (G22) asks for '5 Bars Comparison' while the Revised Logic column (I22) says 'display in a pie chart' \u2014 Revised Logic wins as the latest correction, implemented as pie. Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          7420,
+          3810,
+          2960,
+          2210,
+          1840
+        ]
+      }
+    },
+    {
+      "id": "rap-hect-01",
+      "row": 23,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Total Land Under Sustainable Coffee Farming",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum_scaled",
+      "columns": [
+        "soil_health_total_area",
+        "total_area_under_water_practices",
+        "total_biodiversity_area",
+        "total_climate_mitigation_area",
+        "total_livelihood_area"
+      ],
+      "scale": 0.4048375,
+      "scaleNote": "divide acre-sum by 2.471 to express in hectares",
+      "logic": "Same as 'Total Area Adopted' \u2014 sum acreage across all adopted-practice categories / 2.471.",
+      "sql": "SELECT SUM(soil_health_total_area + total_area_under_water_practices + total_biodiversity_area + total_climate_mitigation_area + total_livelihood_area) / 2.471 AS value FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Working as per current logic \u2014 no change. Duplicate KPI of fm-demo-03, surfaced here for the Regen Practices dashboard's own headline card.",
+      "mock": {
+        "value": 18240
+      }
+    },
+    {
+      "id": "rap-hect-02",
+      "row": 24,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Conservation Practices Adopted",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "if_yes_cradle_pits",
+      "dependsOn": {
+        "column": "cradle_pits",
+        "value": "1"
+      },
+      "categories": [
+        {
+          "label": "Riparian Barriers"
+        },
+        {
+          "label": "Trenches"
+        },
+        {
+          "label": "Cradle Pits"
+        },
+        {
+          "label": "Others"
+        }
+      ],
+      "logic": "Among responses that answered Yes to 'Riparian Barriers/Trenches/Cradle pits on plantation slopes', count which specific option was picked.",
+      "sql": "SELECT if_yes_cradle_pits, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND cradle_pits='1' GROUP BY if_yes_cradle_pits",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          1240,
+          860,
+          1510,
+          210
+        ]
+      }
+    },
+    {
+      "id": "rap-hect-03",
+      "row": 25,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Irrigation Methods Used",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "irrigation_method_used",
+      "categories": [
+        {
+          "label": "Rainfed"
+        },
+        {
+          "label": "Sprinkler"
+        },
+        {
+          "label": "Drip"
+        },
+        {
+          "label": "Solar Pump"
+        },
+        {
+          "label": "Open Storage"
+        }
+      ],
+      "logic": "Multi-select \u2014 each option selected in a response counts individually toward that option's slice.",
+      "sql": "SELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('Rainfed', irrigation_method_used); -- repeat per category",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          4210,
+          3120,
+          2680,
+          940,
+          1310
+        ]
+      }
+    },
+    {
+      "id": "rap-hect-04",
+      "row": 26,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Usage of Regen Ag Inputs",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "yes_for_use_of_npm",
+      "dependsOn": {
+        "column": "use_of_npm",
+        "value": "1"
+      },
+      "categories": [
+        {
+          "label": "On-farm Enriched Composting"
+        },
+        {
+          "label": "Biological Concoctions"
+        }
+      ],
+      "logic": "Only visible when 'Use of NPM/IPM/RegenAg inputs' = Yes (skip logic); count each option chosen. Ignore blanks.",
+      "sql": "SELECT yes_for_use_of_npm, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND use_of_npm='1' AND yes_for_use_of_npm IS NOT NULL AND yes_for_use_of_npm <> '' GROUP BY yes_for_use_of_npm",
+      "notes": "Fixes bug: was rendered as a bar graph and returned 'No Data Available' \u2014 correct chart type is pie; query above resolves the missing-data issue (the skip-logic dependency on use_of_npm='1' was not applied).",
+      "mock": {
+        "series": [
+          3860,
+          2940
+        ]
+      }
+    },
+    {
+      "id": "rap-hect-05",
+      "row": 27,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Methods of On-farm Enriched Composting",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "enriches_composting",
+      "categories": [
+        {
+          "label": "Bio-digesters"
+        },
+        {
+          "label": "Bio-char"
+        },
+        {
+          "label": "Enzyme-tech"
+        },
+        {
+          "label": "Heap/Pit Composting"
+        },
+        {
+          "label": "None"
+        }
+      ],
+      "logic": "Count each Method of On-farm Enriched Composting option selected.",
+      "sql": "SELECT enriches_composting, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' GROUP BY enriches_composting",
+      "notes": "Fixes bug: 'No Data Available' and a missing 'None' option (only 4 of 5 were visible).",
+      "mock": {
+        "series": [
+          1210,
+          940,
+          610,
+          1980,
+          2340
+        ]
+      }
+    },
+    {
+      "id": "rap-hect-06",
+      "row": 28,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Rainwater Harvesting",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "yes_for_rainwater_harvesting",
+      "dependsOn": {
+        "column": "rainwater_harvesting",
+        "value": "1"
+      },
+      "categories": [
+        {
+          "label": "Cradle Pits"
+        },
+        {
+          "label": "Check Dams"
+        },
+        {
+          "label": "Contour Bunding"
+        },
+        {
+          "label": "Open Storage"
+        }
+      ],
+      "logic": "Among Yes responses to Rainwater Harvesting, count each method selected.",
+      "sql": "SELECT yes_for_rainwater_harvesting, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND rainwater_harvesting='1' GROUP BY yes_for_rainwater_harvesting",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          980,
+          1240,
+          860,
+          520
+        ]
+      }
+    },
+    {
+      "id": "rap-hect-07",
+      "row": 29,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Post-harvest De-pulping",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "post_harvest_depulping",
+      "categories": [
+        {
+          "label": "Conventional"
+        },
+        {
+          "label": "Ecopulper"
+        },
+        {
+          "label": "None"
+        }
+      ],
+      "logic": "Count each Post-harvest de-pulping method selected.",
+      "sql": "SELECT post_harvest_depulping, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' GROUP BY post_harvest_depulping",
+      "notes": "Fixes bug: 'No Data Available' and a missing 'None' option (only 2 of 3 were visible).",
+      "mock": {
+        "series": [
+          6210,
+          4980,
+          2340
+        ]
+      }
+    },
+    {
+      "id": "rap-hect-08",
+      "row": 30,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Urea Alternatives Adopted",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "replace_urea",
+      "categories": [
+        {
+          "label": "Neem Coated"
+        },
+        {
+          "label": "Nano Urea"
+        },
+        {
+          "label": "Liquid Urea"
+        },
+        {
+          "label": "None"
+        }
+      ],
+      "logic": "Count each urea-alternative option selected.",
+      "sql": "SELECT replace_urea, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' GROUP BY replace_urea",
+      "notes": "Fixes bug: 'No Data Available' and a missing 'None' option (only 3 of 4 were visible).",
+      "mock": {
+        "series": [
+          2840,
+          1960,
+          1120,
+          8460
+        ]
+      }
+    },
+    {
+      "id": "rap-hect-09",
+      "row": 31,
+      "dashboard": "regen-practices",
+      "subDashboard": "Hectares under Regenerative Agriculture",
+      "indicator": "Integrated Pest Management",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "pest_management",
+      "categories": [
+        {
+          "label": "Eco-friendly Methods"
+        },
+        {
+          "label": "Biological Methods"
+        },
+        {
+          "label": "Pheromone Traps"
+        },
+        {
+          "label": "None"
+        }
+      ],
+      "logic": "Count each IPM option selected.",
+      "sql": "SELECT pest_management, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' GROUP BY pest_management",
+      "notes": "Fixes bug: 'No Data Available' and a missing 'None' option (only 3 of 4 were visible).",
+      "mock": {
+        "series": [
+          1840,
+          2210,
+          960,
+          7120
+        ]
+      }
+    },
+    {
+      "id": "rap-nutr-01",
+      "row": 32,
+      "dashboard": "regen-practices",
+      "subDashboard": "Nutrient Management and Regen Ag Inputs",
+      "indicator": "Inputs Provided During the Visit",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "input_provided",
+      "categories": [
+        {
+          "label": "Seedlings"
+        },
+        {
+          "label": "Biochar"
+        },
+        {
+          "label": "Fertilizers"
+        },
+        {
+          "label": "Bio Traps"
+        },
+        {
+          "label": "Cover Crop Seeds"
+        },
+        {
+          "label": "Others"
+        }
+      ],
+      "logic": "Count each input type selected during the visit.",
+      "sql": "SELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('Seedlings', input_provided); -- repeat per category",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          3210,
+          1840,
+          2960,
+          1120,
+          1680,
+          640
+        ]
+      }
+    },
+    {
+      "id": "rap-nutr-02",
+      "row": 33,
+      "dashboard": "regen-practices",
+      "subDashboard": "Nutrient Management and Regen Ag Inputs",
+      "indicator": "Quantity of Inputs Distributed",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum",
+      "column": "total_input_quantity",
+      "logic": "Sum of Input Quantity Distributed across all responses.",
+      "sql": "SELECT SUM(total_input_quantity) AS value FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "value": 48620
+      }
+    },
+    {
+      "id": "sh-demo-01",
+      "row": 34,
+      "dashboard": "soil-health",
+      "subDashboard": "Demonstration on Soil Health Practices",
+      "indicator": "Demonstrations Conducted for Soil Health Practices",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_equals",
+      "column": "activity_type",
+      "value": "Soil Health",
+      "logic": "Count of responses where Type of Activity = Soil Health.",
+      "sql": "SELECT COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND activity_type = 'Soil Health'",
+      "notes": "Fixes bug: was showing zero despite Soil Health responses existing \u2014 root cause was matching on the wrong option code/value.",
+      "mock": {
+        "value": 640
+      }
+    },
+    {
+      "id": "sh-demo-02",
+      "row": 35,
+      "dashboard": "soil-health",
+      "subDashboard": "Demonstration on Soil Health Practices",
+      "indicator": "Activities Conducted for Improving Soil Health",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_distribution",
+      "column": "order29",
+      "categories": [
+        {
+          "label": "Cover Cropping"
+        },
+        {
+          "label": "Alternative Fertilization"
+        }
+      ],
+      "logic": "Count each option selected; show percentage on hover, absolute count always.",
+      "sql": "SELECT order29, COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND order29 IS NOT NULL GROUP BY order29",
+      "notes": "Fixes bug: was 'No Data Available'; changed to pie chart per spec.",
+      "mock": {
+        "series": [
+          420,
+          180
+        ]
+      }
+    },
+    {
+      "id": "sh-demo-03",
+      "row": 36,
+      "dashboard": "soil-health",
+      "subDashboard": "Demonstration on Soil Health Practices",
+      "indicator": "Demonstrations to Reduce Emissions",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_distribution",
+      "column": "order32",
+      "categories": [
+        {
+          "label": "Composting"
+        },
+        {
+          "label": "Reduced Tillage"
+        }
+      ],
+      "logic": "Count each option selected; show percentage on hover, absolute count always.",
+      "sql": "SELECT order32, COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND order32 IS NOT NULL GROUP BY order32",
+      "notes": "Fixes bug: was 'No Data Available'; changed to pie chart per spec.",
+      "mock": {
+        "series": [
+          360,
+          210
+        ]
+      }
+    },
+    {
+      "id": "wm-01",
+      "row": 37,
+      "dashboard": "water-management",
+      "subDashboard": "Water Use and Management",
+      "indicator": "Activities Related to Water Use Efficiency",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_distribution",
+      "column": "order30",
+      "categories": [
+        {
+          "label": "Drip Irrigation"
+        },
+        {
+          "label": "Rainwater Harvesting"
+        }
+      ],
+      "logic": "Count each option selected for water-use-efficiency activities.",
+      "sql": "SELECT order30, COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND order30 IS NOT NULL GROUP BY order30",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "series": [
+          480,
+          310
+        ]
+      }
+    },
+    {
+      "id": "wm-02",
+      "row": 46,
+      "dashboard": "water-management",
+      "subDashboard": "Water Use and Management",
+      "indicator": "Farmers Practicing Rainwater Harvesting",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_equals",
+      "column": "rainwater_harvesting",
+      "value": "1",
+      "logic": "Count of responses answering Yes to Rainwater Harvesting.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND rainwater_harvesting='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 3600
+      }
+    },
+    {
+      "id": "wm-03",
+      "row": 47,
+      "dashboard": "water-management",
+      "subDashboard": "Water Use and Management",
+      "indicator": "Water Conservation Practices Adopted",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count_single",
+      "column": "demonstrated_practices",
+      "value": "2",
+      "logic": "Count of responses where 'Water' (Option ID 2) is selected in Observed Adoption of Demonstrated Practices.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('2', demonstrated_practices)",
+      "notes": "Fixes bug: was rendered as a graph with 'No Data Available' \u2014 correct presentation is a single card.",
+      "mock": {
+        "value": 5210
+      }
+    },
+    {
+      "id": "wm-04",
+      "row": 48,
+      "dashboard": "water-management",
+      "subDashboard": "Water Use and Management",
+      "indicator": "Number of Adoptions of Different Water Conservation Practices",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "water_adopted_processes",
+      "categories": [
+        {
+          "label": "Farm Pond"
+        },
+        {
+          "label": "Trenches & Cradle Pits"
+        },
+        {
+          "label": "Drip/Sprinkler"
+        }
+      ],
+      "logic": "Multi-select \u2014 each response's selected options counted individually toward each category.",
+      "sql": "SELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('Farm Pond', water_adopted_processes); -- repeat per category",
+      "notes": "Fixes bug: chart type corrected to pie; was 'No Data Available'.",
+      "mock": {
+        "series": [
+          2140,
+          1680,
+          2960
+        ]
+      }
+    },
+    {
+      "id": "wm-05",
+      "row": 49,
+      "dashboard": "water-management",
+      "subDashboard": "Water Use and Management",
+      "indicator": "Acreage of Land under Water Conservation Practices",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum_compare",
+      "categories": [
+        {
+          "label": "Farm Pond",
+          "column": "farm_pond_area"
+        },
+        {
+          "label": "Trenches & Cradle Pits",
+          "column": "trenche_area"
+        },
+        {
+          "label": "Drip/Sprinkler",
+          "column": "sprinkler_area"
+        }
+      ],
+      "logic": "Sum acreage per water-practice column and compare; blanks ignored.",
+      "sql": "SELECT SUM(farm_pond_area) AS farm_pond, SUM(trenche_area) AS trenches, SUM(sprinkler_area) AS drip_sprinkler FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          4820,
+          3610,
+          5240
+        ]
+      }
+    },
+    {
+      "id": "sh-adopt-01",
+      "row": 38,
+      "dashboard": "soil-health",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Number of Farmers Attended Demos",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count",
+      "logic": "Total response count in Demo Farm Activity.",
+      "sql": "SELECT COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 2840
+      }
+    },
+    {
+      "id": "sh-adopt-02",
+      "row": 39,
+      "dashboard": "soil-health",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Number of Farmers Adopted Soil Health Practices",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_not_null",
+      "column": "soil_health_practices",
+      "logic": "Count of responses that answered 'Please select the practices adopted under Soil Health'.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND soil_health_practices IS NOT NULL AND soil_health_practices <> ''",
+      "notes": "Fixes bug: was wrongly displayed as a pie chart \u2014 corrected to a card.",
+      "mock": {
+        "value": 8420
+      }
+    },
+    {
+      "id": "sh-adopt-03",
+      "row": 40,
+      "dashboard": "soil-health",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Sustainable Input Usage",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_not_null",
+      "column": "use_of_npm",
+      "logic": "Total count of responses to 'Use of NPM/IPM/RegenAg inputs' (Yes/No).",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND use_of_npm IS NOT NULL AND use_of_npm <> ''",
+      "notes": "Fixes bug: was wrongly displayed as a pie chart \u2014 corrected to a card.",
+      "mock": {
+        "value": 9640
+      }
+    },
+    {
+      "id": "sh-adopt-04",
+      "row": 41,
+      "dashboard": "soil-health",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Usage of Regen Ag Inputs",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "yes_for_use_of_npm",
+      "dependsOn": {
+        "column": "use_of_npm",
+        "value": "1"
+      },
+      "categories": [
+        {
+          "label": "On-farm Enriched Composting"
+        },
+        {
+          "label": "Biological Concoctions"
+        }
+      ],
+      "logic": "Same as rap-hect-04 \u2014 surfaced again under Soil Health's Adoption of Practices sub-dashboard.",
+      "sql": "SELECT yes_for_use_of_npm, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND use_of_npm='1' AND yes_for_use_of_npm IS NOT NULL AND yes_for_use_of_npm <> '' GROUP BY yes_for_use_of_npm",
+      "notes": "Fixes bug: bar graph shown in error, no data returned \u2014 corrected to pie with proper skip-logic filter.",
+      "mock": {
+        "series": [
+          3860,
+          2940
+        ]
+      }
+    },
+    {
+      "id": "sh-adopt-05",
+      "row": 42,
+      "dashboard": "soil-health",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Methods of On-farm Enriched Composting",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "enriches_composting",
+      "categories": [
+        {
+          "label": "Bio-digesters"
+        },
+        {
+          "label": "Bio-char"
+        },
+        {
+          "label": "Enzyme-tech"
+        },
+        {
+          "label": "Heap/Pit Composting"
+        },
+        {
+          "label": "None"
+        }
+      ],
+      "logic": "Same as rap-hect-05 \u2014 surfaced again under Soil Health's Adoption of Practices sub-dashboard.",
+      "sql": "SELECT enriches_composting, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' GROUP BY enriches_composting",
+      "notes": "Fixes bug: 'No Data Available' and a missing 'None' option.",
+      "mock": {
+        "series": [
+          1210,
+          940,
+          610,
+          1980,
+          2340
+        ]
+      }
+    },
+    {
+      "id": "sh-adopt-06",
+      "row": 43,
+      "dashboard": "soil-health",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Urea Alternatives Adopted",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "replace_urea",
+      "categories": [
+        {
+          "label": "Neem Coated"
+        },
+        {
+          "label": "Nano Urea"
+        },
+        {
+          "label": "Liquid Urea"
+        },
+        {
+          "label": "None"
+        }
+      ],
+      "logic": "Same as rap-hect-08 \u2014 surfaced again under Soil Health's Adoption of Practices sub-dashboard.",
+      "sql": "SELECT replace_urea, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' GROUP BY replace_urea",
+      "notes": "Fixes bug: 'No Data Available' and a missing 'None' option.",
+      "mock": {
+        "series": [
+          2840,
+          1960,
+          1120,
+          8460
+        ]
+      }
+    },
+    {
+      "id": "sh-part-01",
+      "row": 44,
+      "dashboard": "soil-health",
+      "subDashboard": "Farmer Participation",
+      "indicator": "Number of Farmers Adopting Any Practice",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_any_yes",
+      "columns": [
+        "cradle_pits",
+        "use_of_mulching",
+        "use_of_npm",
+        "rainwater_harvesting",
+        "use_of_ecopulpers",
+        "new_coffee_varities"
+      ],
+      "logic": "Count a response once if it answered Yes to any of the visit's multiple activity/adoption questions.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND (cradle_pits='1' OR use_of_mulching='1' OR use_of_npm='1' OR rainwater_harvesting='1' OR use_of_ecopulpers='1' OR new_coffee_varities='1')",
+      "notes": "ASSUMPTION: sheet says 'register the count if Yes for any activity \u2014 questions may vary as there are multiple activity questions in the form' without naming the exact column set. Implemented against the visit form's core Yes/No adoption toggles listed above; confirm the intended column list with the client before go-live.",
+      "mock": {
+        "value": 12480
+      }
+    },
+    {
+      "id": "sh-lime-01",
+      "row": 45,
+      "dashboard": "soil-health",
+      "subDashboard": "Lime Application",
+      "indicator": "Soil Health Demo Participation",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_equals",
+      "column": "activity_type",
+      "value": "Soil Health",
+      "logic": "Count of responses where Type of Activity = Soil Health.",
+      "sql": "SELECT COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND activity_type = 'Soil Health'",
+      "notes": "Fixes bug: was showing zero \u2014 same root cause and fix as sh-demo-01.",
+      "mock": {
+        "value": 640
+      }
+    },
+    {
+      "id": "bio-tree-01",
+      "row": 50,
+      "dashboard": "biodiversity",
+      "subDashboard": "Tree Diversity and Density",
+      "indicator": "Activities Promoting Biodiversity (Demo)",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_distribution",
+      "column": "order31",
+      "categories": [
+        {
+          "label": "Native Tree Planting"
+        },
+        {
+          "label": "Agroforestry Practices"
+        }
+      ],
+      "logic": "Count each option selected; show percentage on hover, absolute count always.",
+      "sql": "SELECT order31, COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND order31 IS NOT NULL GROUP BY order31",
+      "notes": "Fixes bug: 'No Data Available'; changed to pie chart per spec.",
+      "mock": {
+        "series": [
+          310,
+          190
+        ]
+      }
+    },
+    {
+      "id": "bio-tree-02",
+      "row": 51,
+      "dashboard": "biodiversity",
+      "subDashboard": "Tree Diversity and Density",
+      "indicator": "Number of Farmers Received Tree Seedlings",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count_single",
+      "column": "input_provided",
+      "value": "Seedlings",
+      "logic": "Count of responses where 'Seedlings' selected in Inputs Provided During Visit.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('Seedlings', input_provided)",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 3210
+      }
+    },
+    {
+      "id": "bio-shade-01",
+      "row": 52,
+      "dashboard": "biodiversity",
+      "subDashboard": "Shade and Canopy Management",
+      "indicator": "Native Tree Planting in Demo Plots",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_equals",
+      "column": "activity_type",
+      "value": "Planting",
+      "logic": "Count of responses where Type of Activity = Planting (option code 2).",
+      "sql": "SELECT COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND activity_type = 'Planting'",
+      "notes": "Fixes bug: was showing zero despite Planting responses existing \u2014 same root-cause class as sh-demo-01.",
+      "mock": {
+        "value": 480
+      }
+    },
+    {
+      "id": "bio-shade-02",
+      "row": 53,
+      "dashboard": "biodiversity",
+      "subDashboard": "Shade and Canopy Management",
+      "indicator": "Farmers Adopting Practice on Own Coffee Farms",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count_single",
+      "column": "input_provided",
+      "value": "Seedlings",
+      "logic": "Count of responses where 'Seedlings' selected in Inputs Provided During Visit.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('Seedlings', input_provided)",
+      "notes": "Working as per current logic \u2014 no change. Duplicate KPI of bio-tree-02, surfaced under this sub-dashboard per the sheet.",
+      "mock": {
+        "value": 3210
+      }
+    },
+    {
+      "id": "bio-bark-01",
+      "row": 54,
+      "dashboard": "biodiversity",
+      "subDashboard": "Bark Scrubbing",
+      "indicator": "Activities Promoting Biodiversity",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "yes_for_use_of_npm",
+      "dependsOn": {
+        "column": "use_of_npm",
+        "value": "1"
+      },
+      "categories": [
+        {
+          "label": "On-farm Enriched Composting"
+        },
+        {
+          "label": "Biological Concoctions"
+        }
+      ],
+      "logic": "Same source/logic as rap-hect-04.",
+      "sql": "SELECT yes_for_use_of_npm, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND use_of_npm='1' AND yes_for_use_of_npm IS NOT NULL AND yes_for_use_of_npm <> '' GROUP BY yes_for_use_of_npm",
+      "notes": "SHEET NOTE: this row's Question/Logic and Revised Logic text is identical to 'Usage of Regen Ag Inputs' (rows 26/41/54) rather than describing a bark-scrubbing-specific question \u2014 the schema has no bark-scrubbing field. Implemented literally as specified in the sheet; flag to client that this looks like a copy/paste artifact and confirm the intended source question for 'Bark Scrubbing'.",
+      "mock": {
+        "series": [
+          3860,
+          2940
+        ]
+      }
+    },
+    {
+      "id": "bio-adopt-01",
+      "row": 55,
+      "dashboard": "biodiversity",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Activities Promoting Biodiversity",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "biodiversity_practices",
+      "categories": [
+        {
+          "label": "Native/Fruit Tree Seedlings Planted",
+          "value": "1"
+        },
+        {
+          "label": "Riparian Buffer Zones",
+          "value": "2"
+        },
+        {
+          "label": "NPM/IPM / Stopped Weedicide",
+          "value": "3"
+        },
+        {
+          "label": "Mixed Cropping",
+          "value": "4"
+        }
+      ],
+      "logic": "Multi-select \u2014 each response's selected options counted individually toward each category.",
+      "sql": "SELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('1', biodiversity_practices); -- repeat per category",
+      "notes": "Fixes bug: category tag labels were tilted/wrapping oddly (render horizontally instead) and 'No Data Available' despite existing responses.",
+      "mock": {
+        "series": [
+          2840,
+          1960,
+          2310,
+          1480
+        ]
+      }
+    },
+    {
+      "id": "bio-adopt-02",
+      "row": 56,
+      "dashboard": "biodiversity",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Number of Adoptions of Different Biodiversity Activities",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "biodiversity_practices",
+      "categories": [
+        {
+          "label": "Native/Fruit Tree Seedlings Planted",
+          "value": "1"
+        },
+        {
+          "label": "Riparian Buffer Zones",
+          "value": "2"
+        },
+        {
+          "label": "NPM/IPM / Stopped Weedicide",
+          "value": "3"
+        },
+        {
+          "label": "Mixed Cropping",
+          "value": "4"
+        }
+      ],
+      "logic": "Same source/logic as bio-adopt-01 \u2014 a second view of the same breakdown per the sheet.",
+      "sql": "SELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('1', biodiversity_practices); -- repeat per category",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "series": [
+          2840,
+          1960,
+          2310,
+          1480
+        ]
+      }
+    },
+    {
+      "id": "bio-adopt-03",
+      "row": 57,
+      "dashboard": "biodiversity",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Acreage under Biodiversity Practices",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum_compare",
+      "categories": [
+        {
+          "label": "Native/Fruit Tree Seedlings",
+          "column": "fruit_tree_area"
+        },
+        {
+          "label": "Riparian Buffer Zones",
+          "column": "riparian_area"
+        },
+        {
+          "label": "NPM/IPM / Stopped Weedicide",
+          "column": "weedicide_area"
+        },
+        {
+          "label": "Mixed Cropping",
+          "column": "mixed_crop_area"
+        }
+      ],
+      "logic": "Sum acreage per biodiversity-practice column and compare.",
+      "sql": "SELECT SUM(fruit_tree_area) AS fruit_tree, SUM(riparian_area) AS riparian, SUM(weedicide_area) AS weedicide, SUM(mixed_crop_area) AS mixed_crop FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "series": [
+          3210,
+          2140,
+          2680,
+          1590
+        ]
+      }
+    },
+    {
+      "id": "cli-adopt-01",
+      "row": 58,
+      "dashboard": "climate-ghg",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Activities to Reduce Emissions",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_distribution",
+      "column": "order32",
+      "categories": [
+        {
+          "label": "Composting"
+        },
+        {
+          "label": "Reduced Tillage"
+        }
+      ],
+      "logic": "Count each option selected in Q49 of Individual Farmer Visit.",
+      "sql": "SELECT order32, COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND order32 IS NOT NULL GROUP BY order32",
+      "notes": "SHEET FLAG: form/table reference (order32) does not exist on individual_farmer_visit \u2014 it belongs to demo_farm_activity (see sh-demo-03). Marked 'NO DATA AVAILABLE' in the sheet, consistent with this mismatch. Implemented against demo_farm_activity.order32 (the only table that has this column) pending client confirmation.",
+      "mock": {
+        "series": [
+          360,
+          210
+        ]
+      }
+    },
+    {
+      "id": "cli-adopt-02",
+      "row": 59,
+      "dashboard": "climate-ghg",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Number of Adoptions of Different Emission-Reduction Activities",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "climate_practices",
+      "categories": [
+        {
+          "label": "Two-tier Canopy Management",
+          "value": "1"
+        },
+        {
+          "label": "Split Dose Fertilizer Application",
+          "value": "2"
+        },
+        {
+          "label": "Pulp Waste Treatment",
+          "value": "3"
+        }
+      ],
+      "logic": "Multi-select \u2014 each response's selected options counted individually toward each category.",
+      "sql": "SELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('1', climate_practices); -- repeat per category",
+      "notes": "Was 'NO DATA AVAILABLE'.",
+      "mock": {
+        "series": [
+          2140,
+          1680,
+          1310
+        ]
+      }
+    },
+    {
+      "id": "cli-adopt-03",
+      "row": 60,
+      "dashboard": "climate-ghg",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Acreage under Emission-Reduction Activities",
+      "chartType": "column",
+      "chartLib": "highcharts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum_compare",
+      "categories": [
+        {
+          "label": "Two-tier Canopy Management",
+          "column": "canopy_area"
+        },
+        {
+          "label": "Split Dose Fertilizer Application",
+          "column": "split_dose_area"
+        },
+        {
+          "label": "Pulp Waste Treatment",
+          "column": "pulp_waste_area"
+        }
+      ],
+      "logic": "Sum acreage per emission-reduction practice column and compare.",
+      "sql": "SELECT SUM(canopy_area) AS canopy, SUM(split_dose_area) AS split_dose, SUM(pulp_waste_area) AS pulp_waste FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Was 'NO DATA AVAILABLE'.",
+      "mock": {
+        "series": [
+          2640,
+          1980,
+          1420
+        ]
+      }
+    },
+    {
+      "id": "live-inter-01",
+      "row": 61,
+      "dashboard": "livelihood",
+      "subDashboard": "Intercropping with Fruit Trees and High-Value Biomass",
+      "indicator": "Intercropping Plots",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_equals",
+      "column": "order33",
+      "value": "Crop Diversification",
+      "logic": "Count of responses where Measures for Improving Income = Crop Diversification (option code 1).",
+      "sql": "SELECT COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND order33 = 'Crop Diversification'",
+      "notes": "Fixes bug: was showing zero despite Crop Diversification responses existing \u2014 same root-cause class as sh-demo-01.",
+      "mock": {
+        "value": 380
+      }
+    },
+    {
+      "id": "live-inter-02",
+      "row": 62,
+      "dashboard": "livelihood",
+      "subDashboard": "Intercropping with Fruit Trees and High-Value Biomass",
+      "indicator": "Intercrops Grown with Coffee",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "farmer_master_form"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "intercops_grown",
+      "categories": [
+        {
+          "label": "Black Pepper"
+        },
+        {
+          "label": "Cardamom"
+        },
+        {
+          "label": "Fruit Trees"
+        },
+        {
+          "label": "Areca Nut"
+        },
+        {
+          "label": "Others"
+        }
+      ],
+      "logic": "Count each intercrop option selected.",
+      "sql": "SELECT COUNT(*) FROM farmer_master_form WHERE isActive='1' AND FIND_IN_SET('Black Pepper', intercops_grown); -- repeat per category",
+      "notes": "Was 'No Data Available'.",
+      "mock": {
+        "series": [
+          9840,
+          4210,
+          2680,
+          1960,
+          890
+        ]
+      }
+    },
+    {
+      "id": "live-api-01",
+      "row": 63,
+      "dashboard": "livelihood",
+      "subDashboard": "Apiary for Pollination",
+      "indicator": "Beehives Setup",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum",
+      "column": "nos_new_beehives",
+      "logic": "Sum of New Beehives Set Up.",
+      "sql": "SELECT SUM(nos_new_beehives) AS value FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 940
+      }
+    },
+    {
+      "id": "live-api-02",
+      "row": 64,
+      "dashboard": "livelihood",
+      "subDashboard": "Apiary for Pollination",
+      "indicator": "Farmers Generating Income Through Honey",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count_single",
+      "column": "other_income_sources",
+      "value": "Honey",
+      "logic": "Count of responses where 'Honey' (Option ID 5) selected in Other Income Generating Activities (farm related).",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND FIND_IN_SET('5', other_income_sources)",
+      "notes": "Fixes bug: was showing zero despite Honey responses existing \u2014 root cause was matching on the wrong option code.",
+      "mock": {
+        "value": 520
+      }
+    },
+    {
+      "id": "live-adopt-01",
+      "row": 65,
+      "dashboard": "livelihood",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Demonstration to Improve Income",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "demo_farm_activity"
+      ],
+      "aggregation": "count_distribution",
+      "column": "order33",
+      "categories": [
+        {
+          "label": "Crop Diversification"
+        },
+        {
+          "label": "Off-farm Activities"
+        },
+        {
+          "label": "Apiary (Beekeeping)"
+        },
+        {
+          "label": "Aquaculture"
+        }
+      ],
+      "logic": "Count each Measures for Improving Income option; show absolute number always, percentage on hover.",
+      "sql": "SELECT order33, COUNT(*) AS value FROM demo_farm_activity WHERE isActive='1' AND order33 IS NOT NULL GROUP BY order33",
+      "notes": "Fixes bug: was 'No Data Available' despite existing responses.",
+      "mock": {
+        "series": [
+          380,
+          210,
+          160,
+          90
+        ]
+      }
+    },
+    {
+      "id": "live-adopt-02",
+      "row": 66,
+      "dashboard": "livelihood",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Number of Adoptions under Livelihood Diversification",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_not_null",
+      "column": "livelihood_practices",
+      "logic": "Total count of responses where 'Please select the practices adopted under Livelihood diversification' is answered.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND livelihood_practices IS NOT NULL AND livelihood_practices <> ''",
+      "notes": "Fixes bug: source question was wrongly mapped \u2014 remapped to livelihood_practices as specified in the revised logic.",
+      "mock": {
+        "value": 4680
+      }
+    },
+    {
+      "id": "live-adopt-03",
+      "row": 67,
+      "dashboard": "livelihood",
+      "subDashboard": "Adoption of Practices",
+      "indicator": "Acreage under Livelihood Diversification",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "sum",
+      "column": "total_livelihood_area",
+      "logic": "Sum of Total Acreage Livelihood Diversification across all responses.",
+      "sql": "SELECT SUM(total_livelihood_area) AS value FROM individual_farmer_visit WHERE isActive='1'",
+      "notes": "Fixes bug: was wrongly mapped and showed 'No Data Available'; changed from a graph to a top-of-page card.",
+      "mock": {
+        "value": 6240
+      }
+    },
+    {
+      "id": "oth-01",
+      "row": 68,
+      "dashboard": "others",
+      "subDashboard": "Others",
+      "indicator": "Farmers Who Got Soil Samples Tested After Aug 2024",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_equals",
+      "column": "soil_test",
+      "value": "1",
+      "logic": "Count of responses answering Yes to soil sample testing after August 2024.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND soil_test='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 3960
+      }
+    },
+    {
+      "id": "oth-02",
+      "row": 69,
+      "dashboard": "others",
+      "subDashboard": "Others",
+      "indicator": "Count of Beneficiaries Accessing Schemes",
+      "chartType": "kpi",
+      "chartLib": "none",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "count_equals",
+      "column": "iccrl",
+      "value": "1",
+      "logic": "Count of responses answering Yes to accessing Schemes/Subsidies/loans/grants through ICCRL.",
+      "sql": "SELECT COUNT(*) AS value FROM individual_farmer_visit WHERE isActive='1' AND iccrl='1'",
+      "notes": "Working as per current logic \u2014 no change.",
+      "mock": {
+        "value": 4310
+      }
+    },
+    {
+      "id": "oth-03",
+      "row": 70,
+      "dashboard": "others",
+      "subDashboard": "Others",
+      "indicator": "Source of Scheme Access (ICCRL)",
+      "chartType": "pie",
+      "chartLib": "echarts",
+      "tables": [
+        "individual_farmer_visit"
+      ],
+      "aggregation": "multi_select_count",
+      "multiSelect": true,
+      "column": "institutions_if_yes",
+      "categories": [
+        {
+          "label": "Govt Dept Scheme"
+        },
+        {
+          "label": "Bank"
+        },
+        {
+          "label": "Microfinance"
+        },
+        {
+          "label": "SHG"
+        },
+        {
+          "label": "Others"
+        }
+      ],
+      "logic": "Count each institution option selected among Yes/ICCRL responses.",
+      "sql": "SELECT COUNT(*) FROM individual_farmer_visit WHERE isActive='1' AND iccrl='1' AND FIND_IN_SET('Govt Dept Scheme', institutions_if_yes); -- repeat per category",
+      "notes": "Was 'No Data Available' despite existing responses.",
+      "mock": {
+        "series": [
+          1840,
+          1120,
+          640,
+          480,
+          230
+        ]
+      }
+    }
+  ]
+}
